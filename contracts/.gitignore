@@ -1,0 +1,14 @@
+# Sensitive keys / secrets
+.keys.txt
+
+# Dependencies
+node_modules/
+
+# Anchor
+.anchor/
+
+# Rust build artifacts
+target/
+
+# Solana local validator ledger
+test-ledger/
