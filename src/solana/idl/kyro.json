@@ -1,0 +1,4231 @@
+{
+  "address": "ESVeXwXtP9jDv1JoGnfQcQwC3tnyEdXV5VsATqxyCCg3",
+  "metadata": {
+    "name": "kyro",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Kyro Credit Protocol - Solana Port"
+  },
+  "instructions": [
+    {
+      "name": "accept_admin",
+      "docs": [
+        "Accept pending admin transfer"
+      ],
+      "discriminator": [
+        112,
+        42,
+        45,
+        90,
+        116,
+        181,
+        13,
+        170
+      ],
+      "accounts": [
+        {
+          "name": "new_admin",
+          "signer": true
+        },
+        {
+          "name": "credit_manager",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  114,
+                  101,
+                  100,
+                  105,
+                  116,
+                  95,
+                  109,
+                  97,
+                  110,
+                  97,
+                  103,
+                  101,
+                  114
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "lending_pool",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  101,
+                  110,
+                  100,
+                  105,
+                  110,
+                  103,
+                  95,
+                  112,
+                  111,
+                  111,
+                  108
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "reputation_manager",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  101,
+                  112,
+                  117,
+                  116,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110,
+                  95,
+                  109,
+                  97,
+                  110,
+                  97,
+                  103,
+                  101,
+                  114
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "add_collateral",
+      "docs": [
+        "Add collateral to an existing credit line (also reactivates inactive credit lines)"
+      ],
+      "discriminator": [
+        127,
+        82,
+        121,
+        42,
+        161,
+        176,
+        249,
+        206
+      ],
+      "accounts": [
+        {
+          "name": "borrower",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "credit_manager",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  114,
+                  101,
+                  100,
+                  105,
+                  116,
+                  95,
+                  109,
+                  97,
+                  110,
+                  97,
+                  103,
+                  101,
+                  114
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "lending_pool",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  101,
+                  110,
+                  100,
+                  105,
+                  110,
+                  103,
+                  95,
+                  112,
+                  111,
+                  111,
+                  108
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "credit_line",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  114,
+                  101,
+                  100,
+                  105,
+                  116,
+                  95,
+                  108,
+                  105,
+                  110,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "borrower"
+              }
+            ]
+          }
+        },
+        {
+          "name": "collateral_info",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  108,
+                  108,
+                  97,
+                  116,
+                  101,
+                  114,
+                  97,
+                  108,
+                  95,
+                  105,
+                  110,
+                  102,
+                  111
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "borrower"
+              }
+            ]
+          }
+        },
+        {
+          "name": "usdc_mint"
+        },
+        {
+          "name": "borrower_token_account",
+          "docs": [
+            "Borrower's USDC token account"
+          ],
+          "writable": true
+        },
+        {
+          "name": "collateral_vault",
+          "docs": [
+            "Collateral vault"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  108,
+                  108,
+                  97,
+                  116,
+                  101,
+                  114,
+                  97,
+                  108,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "collateral_amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "borrow",
+      "docs": [
+        "Borrow funds from the pool (sent to borrower)"
+      ],
+      "discriminator": [
+        228,
+        253,
+        131,
+        202,
+        207,
+        116,
+        89,
+        18
+      ],
+      "accounts": [
+        {
+          "name": "borrower",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "credit_manager",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  114,
+                  101,
+                  100,
+                  105,
+                  116,
+                  95,
+                  109,
+                  97,
+                  110,
+                  97,
+                  103,
+                  101,
+                  114
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "lending_pool",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  101,
+                  110,
+                  100,
+                  105,
+                  110,
+                  103,
+                  95,
+                  112,
+                  111,
+                  111,
+                  108
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "credit_line",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  114,
+                  101,
+                  100,
+                  105,
+                  116,
+                  95,
+                  108,
+                  105,
+                  110,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "borrower"
+              }
+            ]
+          }
+        },
+        {
+          "name": "collateral_info",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  108,
+                  108,
+                  97,
+                  116,
+                  101,
+                  114,
+                  97,
+                  108,
+                  95,
+                  105,
+                  110,
+                  102,
+                  111
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "borrower"
+              }
+            ]
+          }
+        },
+        {
+          "name": "usdc_mint"
+        },
+        {
+          "name": "borrower_token_account",
+          "docs": [
+            "Borrower's USDC token account (receives the borrowed funds)"
+          ],
+          "writable": true
+        },
+        {
+          "name": "pool_vault",
+          "docs": [
+            "Pool vault (source of borrowed funds)"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  111,
+                  108,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "borrow_and_pay",
+      "docs": [
+        "Borrow funds and pay directly to a recipient"
+      ],
+      "discriminator": [
+        150,
+        198,
+        81,
+        242,
+        165,
+        183,
+        144,
+        123
+      ],
+      "accounts": [
+        {
+          "name": "borrower",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "credit_manager",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  114,
+                  101,
+                  100,
+                  105,
+                  116,
+                  95,
+                  109,
+                  97,
+                  110,
+                  97,
+                  103,
+                  101,
+                  114
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "lending_pool",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  101,
+                  110,
+                  100,
+                  105,
+                  110,
+                  103,
+                  95,
+                  112,
+                  111,
+                  111,
+                  108
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "credit_line",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  114,
+                  101,
+                  100,
+                  105,
+                  116,
+                  95,
+                  108,
+                  105,
+                  110,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "borrower"
+              }
+            ]
+          }
+        },
+        {
+          "name": "collateral_info",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  108,
+                  108,
+                  97,
+                  116,
+                  101,
+                  114,
+                  97,
+                  108,
+                  95,
+                  105,
+                  110,
+                  102,
+                  111
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "borrower"
+              }
+            ]
+          }
+        },
+        {
+          "name": "usdc_mint"
+        },
+        {
+          "name": "recipient_token_account",
+          "docs": [
+            "Recipient's USDC token account (receives the payment)"
+          ],
+          "writable": true
+        },
+        {
+          "name": "pool_vault",
+          "docs": [
+            "Pool vault (source of borrowed funds)"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  111,
+                  108,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "recipient",
+          "type": "pubkey"
+        },
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "cancel_admin_transfer",
+      "docs": [
+        "Cancel pending admin transfer"
+      ],
+      "discriminator": [
+        38,
+        131,
+        157,
+        31,
+        240,
+        137,
+        44,
+        215
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "signer": true
+        },
+        {
+          "name": "credit_manager",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  114,
+                  101,
+                  100,
+                  105,
+                  116,
+                  95,
+                  109,
+                  97,
+                  110,
+                  97,
+                  103,
+                  101,
+                  114
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "deposit",
+      "docs": [
+        "Deposit USDC into the lending pool"
+      ],
+      "discriminator": [
+        242,
+        35,
+        198,
+        137,
+        82,
+        225,
+        242,
+        182
+      ],
+      "accounts": [
+        {
+          "name": "lender",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "credit_manager",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  114,
+                  101,
+                  100,
+                  105,
+                  116,
+                  95,
+                  109,
+                  97,
+                  110,
+                  97,
+                  103,
+                  101,
+                  114
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "lending_pool",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  101,
+                  110,
+                  100,
+                  105,
+                  110,
+                  103,
+                  95,
+                  112,
+                  111,
+                  111,
+                  108
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "lender_info",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  101,
+                  110,
+                  100,
+                  101,
+                  114,
+                  95,
+                  105,
+                  110,
+                  102,
+                  111
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "lender"
+              }
+            ]
+          }
+        },
+        {
+          "name": "usdc_mint"
+        },
+        {
+          "name": "lender_token_account",
+          "docs": [
+            "Lender's USDC token account"
+          ],
+          "writable": true
+        },
+        {
+          "name": "pool_vault",
+          "docs": [
+            "Pool vault"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  111,
+                  108,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "initialize",
+      "docs": [
+        "Initialize the entire protocol: CreditManager, LendingPool, ReputationManager, and all vaults"
+      ],
+      "discriminator": [
+        175,
+        175,
+        109,
+        31,
+        13,
+        152,
+        155,
+        237
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "credit_manager",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  114,
+                  101,
+                  100,
+                  105,
+                  116,
+                  95,
+                  109,
+                  97,
+                  110,
+                  97,
+                  103,
+                  101,
+                  114
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "lending_pool",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  101,
+                  110,
+                  100,
+                  105,
+                  110,
+                  103,
+                  95,
+                  112,
+                  111,
+                  111,
+                  108
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "reputation_manager",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  101,
+                  112,
+                  117,
+                  116,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110,
+                  95,
+                  109,
+                  97,
+                  110,
+                  97,
+                  103,
+                  101,
+                  114
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "usdc_mint",
+          "docs": [
+            "USDC mint"
+          ]
+        },
+        {
+          "name": "pool_vault",
+          "docs": [
+            "Pool vault for lender deposits and borrows"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  111,
+                  108,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "collateral_vault",
+          "docs": [
+            "Collateral vault for borrower collateral"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  108,
+                  108,
+                  97,
+                  116,
+                  101,
+                  114,
+                  97,
+                  108,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "protocol_fees_vault",
+          "docs": [
+            "Protocol fees vault"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  116,
+                  111,
+                  99,
+                  111,
+                  108,
+                  95,
+                  102,
+                  101,
+                  101,
+                  115
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "liquidate",
+      "docs": [
+        "Liquidate a borrower's position (admin only, when over LTV or overdue)"
+      ],
+      "discriminator": [
+        223,
+        179,
+        226,
+        125,
+        48,
+        46,
+        39,
+        74
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "credit_manager",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  114,
+                  101,
+                  100,
+                  105,
+                  116,
+                  95,
+                  109,
+                  97,
+                  110,
+                  97,
+                  103,
+                  101,
+                  114
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "lending_pool",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  101,
+                  110,
+                  100,
+                  105,
+                  110,
+                  103,
+                  95,
+                  112,
+                  111,
+                  111,
+                  108
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "credit_line",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  114,
+                  101,
+                  100,
+                  105,
+                  116,
+                  95,
+                  108,
+                  105,
+                  110,
+                  101
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "borrower_key"
+              }
+            ]
+          }
+        },
+        {
+          "name": "collateral_info",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  108,
+                  108,
+                  97,
+                  116,
+                  101,
+                  114,
+                  97,
+                  108,
+                  95,
+                  105,
+                  110,
+                  102,
+                  111
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "borrower_key"
+              }
+            ]
+          }
+        },
+        {
+          "name": "reputation_manager",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  101,
+                  112,
+                  117,
+                  116,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110,
+                  95,
+                  109,
+                  97,
+                  110,
+                  97,
+                  103,
+                  101,
+                  114
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "reputation_data",
+          "docs": [
+            "Per-user reputation data. init_if_needed since liquidation may be first reputation interaction."
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  101,
+                  112,
+                  117,
+                  116,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "borrower_key"
+              }
+            ]
+          }
+        },
+        {
+          "name": "usdc_mint"
+        },
+        {
+          "name": "collateral_vault",
+          "docs": [
+            "Collateral vault (collateral stays in vault — no transfer on liquidation)"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  108,
+                  108,
+                  97,
+                  116,
+                  101,
+                  114,
+                  97,
+                  108,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "pool_vault",
+          "docs": [
+            "Pool vault (seized collateral gets transferred here to cover bad debt)"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  111,
+                  108,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "borrower",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "open_credit_line",
+      "docs": [
+        "Open a new credit line with collateral deposit"
+      ],
+      "discriminator": [
+        126,
+        111,
+        245,
+        44,
+        233,
+        249,
+        30,
+        238
+      ],
+      "accounts": [
+        {
+          "name": "borrower",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "credit_manager",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  114,
+                  101,
+                  100,
+                  105,
+                  116,
+                  95,
+                  109,
+                  97,
+                  110,
+                  97,
+                  103,
+                  101,
+                  114
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "lending_pool",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  101,
+                  110,
+                  100,
+                  105,
+                  110,
+                  103,
+                  95,
+                  112,
+                  111,
+                  111,
+                  108
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "credit_line",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  114,
+                  101,
+                  100,
+                  105,
+                  116,
+                  95,
+                  108,
+                  105,
+                  110,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "borrower"
+              }
+            ]
+          }
+        },
+        {
+          "name": "collateral_info",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  108,
+                  108,
+                  97,
+                  116,
+                  101,
+                  114,
+                  97,
+                  108,
+                  95,
+                  105,
+                  110,
+                  102,
+                  111
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "borrower"
+              }
+            ]
+          }
+        },
+        {
+          "name": "usdc_mint"
+        },
+        {
+          "name": "borrower_token_account",
+          "docs": [
+            "Borrower's USDC token account"
+          ],
+          "writable": true
+        },
+        {
+          "name": "collateral_vault",
+          "docs": [
+            "Collateral vault"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  108,
+                  108,
+                  97,
+                  116,
+                  101,
+                  114,
+                  97,
+                  108,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "collateral_amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "pause",
+      "docs": [
+        "Pause the entire protocol"
+      ],
+      "discriminator": [
+        211,
+        22,
+        221,
+        251,
+        74,
+        121,
+        193,
+        47
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "signer": true
+        },
+        {
+          "name": "credit_manager",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  114,
+                  101,
+                  100,
+                  105,
+                  116,
+                  95,
+                  109,
+                  97,
+                  110,
+                  97,
+                  103,
+                  101,
+                  114
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "lending_pool",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  101,
+                  110,
+                  100,
+                  105,
+                  110,
+                  103,
+                  95,
+                  112,
+                  111,
+                  111,
+                  108
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "reputation_manager",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  101,
+                  112,
+                  117,
+                  116,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110,
+                  95,
+                  109,
+                  97,
+                  110,
+                  97,
+                  103,
+                  101,
+                  114
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "repay",
+      "docs": [
+        "Repay borrowed funds (principal and/or interest)"
+      ],
+      "discriminator": [
+        234,
+        103,
+        67,
+        82,
+        208,
+        234,
+        219,
+        166
+      ],
+      "accounts": [
+        {
+          "name": "borrower",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "credit_manager",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  114,
+                  101,
+                  100,
+                  105,
+                  116,
+                  95,
+                  109,
+                  97,
+                  110,
+                  97,
+                  103,
+                  101,
+                  114
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "lending_pool",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  101,
+                  110,
+                  100,
+                  105,
+                  110,
+                  103,
+                  95,
+                  112,
+                  111,
+                  111,
+                  108
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "credit_line",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  114,
+                  101,
+                  100,
+                  105,
+                  116,
+                  95,
+                  108,
+                  105,
+                  110,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "borrower"
+              }
+            ]
+          }
+        },
+        {
+          "name": "reputation_manager",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  101,
+                  112,
+                  117,
+                  116,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110,
+                  95,
+                  109,
+                  97,
+                  110,
+                  97,
+                  103,
+                  101,
+                  114
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "reputation_data",
+          "docs": [
+            "Per-user reputation data. init_if_needed since first repay may be first reputation interaction."
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  101,
+                  112,
+                  117,
+                  116,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "borrower"
+              }
+            ]
+          }
+        },
+        {
+          "name": "usdc_mint"
+        },
+        {
+          "name": "borrower_token_account",
+          "docs": [
+            "Borrower's USDC token account"
+          ],
+          "writable": true
+        },
+        {
+          "name": "pool_vault",
+          "docs": [
+            "Pool vault (receives repayment)"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  111,
+                  108,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "principal_amount",
+          "type": "u64"
+        },
+        {
+          "name": "interest_amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "transfer_admin",
+      "docs": [
+        "Initiate a two-step admin transfer"
+      ],
+      "discriminator": [
+        42,
+        242,
+        66,
+        106,
+        228,
+        10,
+        111,
+        156
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "signer": true
+        },
+        {
+          "name": "credit_manager",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  114,
+                  101,
+                  100,
+                  105,
+                  116,
+                  95,
+                  109,
+                  97,
+                  110,
+                  97,
+                  103,
+                  101,
+                  114
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "new_admin",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "unpause",
+      "docs": [
+        "Unpause the entire protocol"
+      ],
+      "discriminator": [
+        169,
+        144,
+        4,
+        38,
+        10,
+        141,
+        188,
+        255
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "signer": true
+        },
+        {
+          "name": "credit_manager",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  114,
+                  101,
+                  100,
+                  105,
+                  116,
+                  95,
+                  109,
+                  97,
+                  110,
+                  97,
+                  103,
+                  101,
+                  114
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "lending_pool",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  101,
+                  110,
+                  100,
+                  105,
+                  110,
+                  103,
+                  95,
+                  112,
+                  111,
+                  111,
+                  108
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "reputation_manager",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  101,
+                  112,
+                  117,
+                  116,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110,
+                  95,
+                  109,
+                  97,
+                  110,
+                  97,
+                  103,
+                  101,
+                  114
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "update_parameters",
+      "docs": [
+        "Update credit protocol parameters (interest rate, reputation threshold, credit multiplier)"
+      ],
+      "discriminator": [
+        116,
+        107,
+        24,
+        207,
+        101,
+        49,
+        213,
+        77
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "signer": true
+        },
+        {
+          "name": "credit_manager",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  114,
+                  101,
+                  100,
+                  105,
+                  116,
+                  95,
+                  109,
+                  97,
+                  110,
+                  97,
+                  103,
+                  101,
+                  114
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "fixed_interest_rate",
+          "type": "u64"
+        },
+        {
+          "name": "reputation_threshold",
+          "type": "u64"
+        },
+        {
+          "name": "credit_increase_multiplier",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "update_reputation_parameters",
+      "docs": [
+        "Update reputation scoring parameters"
+      ],
+      "discriminator": [
+        246,
+        40,
+        236,
+        189,
+        137,
+        16,
+        0,
+        59
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "signer": true
+        },
+        {
+          "name": "credit_manager",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  114,
+                  101,
+                  100,
+                  105,
+                  116,
+                  95,
+                  109,
+                  97,
+                  110,
+                  97,
+                  103,
+                  101,
+                  114
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "reputation_manager",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  101,
+                  112,
+                  117,
+                  116,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110,
+                  95,
+                  109,
+                  97,
+                  110,
+                  97,
+                  103,
+                  101,
+                  114
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "on_time_bonus",
+          "type": "u64"
+        },
+        {
+          "name": "late_payment_penalty",
+          "type": "u64"
+        },
+        {
+          "name": "default_penalty",
+          "type": "u64"
+        },
+        {
+          "name": "max_score_change",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "withdraw",
+      "docs": [
+        "Withdraw USDC from the lending pool (interest deducted first, then principal)"
+      ],
+      "discriminator": [
+        183,
+        18,
+        70,
+        156,
+        148,
+        109,
+        161,
+        34
+      ],
+      "accounts": [
+        {
+          "name": "lender",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "credit_manager",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  114,
+                  101,
+                  100,
+                  105,
+                  116,
+                  95,
+                  109,
+                  97,
+                  110,
+                  97,
+                  103,
+                  101,
+                  114
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "lending_pool",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  101,
+                  110,
+                  100,
+                  105,
+                  110,
+                  103,
+                  95,
+                  112,
+                  111,
+                  111,
+                  108
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "lender_info",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  101,
+                  110,
+                  100,
+                  101,
+                  114,
+                  95,
+                  105,
+                  110,
+                  102,
+                  111
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "lender"
+              }
+            ]
+          }
+        },
+        {
+          "name": "usdc_mint"
+        },
+        {
+          "name": "lender_token_account",
+          "docs": [
+            "Lender's USDC token account"
+          ],
+          "writable": true
+        },
+        {
+          "name": "pool_vault",
+          "docs": [
+            "Pool vault"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  111,
+                  108,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "withdraw_collateral",
+      "docs": [
+        "Withdraw collateral (only when no outstanding debt)"
+      ],
+      "discriminator": [
+        115,
+        135,
+        168,
+        106,
+        139,
+        214,
+        138,
+        150
+      ],
+      "accounts": [
+        {
+          "name": "borrower",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "credit_manager",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  114,
+                  101,
+                  100,
+                  105,
+                  116,
+                  95,
+                  109,
+                  97,
+                  110,
+                  97,
+                  103,
+                  101,
+                  114
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "lending_pool",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  101,
+                  110,
+                  100,
+                  105,
+                  110,
+                  103,
+                  95,
+                  112,
+                  111,
+                  111,
+                  108
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "credit_line",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  114,
+                  101,
+                  100,
+                  105,
+                  116,
+                  95,
+                  108,
+                  105,
+                  110,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "borrower"
+              }
+            ]
+          }
+        },
+        {
+          "name": "collateral_info",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  108,
+                  108,
+                  97,
+                  116,
+                  101,
+                  114,
+                  97,
+                  108,
+                  95,
+                  105,
+                  110,
+                  102,
+                  111
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "borrower"
+              }
+            ]
+          }
+        },
+        {
+          "name": "usdc_mint"
+        },
+        {
+          "name": "borrower_token_account",
+          "docs": [
+            "Borrower's USDC token account"
+          ],
+          "writable": true
+        },
+        {
+          "name": "collateral_vault",
+          "docs": [
+            "Collateral vault"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  108,
+                  108,
+                  97,
+                  116,
+                  101,
+                  114,
+                  97,
+                  108,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "pool_vault",
+          "docs": [
+            "Pool vault (interest may come from here)"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  111,
+                  108,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "CollateralInfo",
+      "discriminator": [
+        163,
+        68,
+        82,
+        37,
+        220,
+        178,
+        18,
+        153
+      ]
+    },
+    {
+      "name": "CreditLine",
+      "discriminator": [
+        220,
+        226,
+        205,
+        24,
+        220,
+        151,
+        129,
+        104
+      ]
+    },
+    {
+      "name": "CreditManagerState",
+      "discriminator": [
+        109,
+        145,
+        164,
+        174,
+        29,
+        148,
+        63,
+        202
+      ]
+    },
+    {
+      "name": "LenderInfo",
+      "discriminator": [
+        241,
+        202,
+        211,
+        181,
+        44,
+        218,
+        249,
+        11
+      ]
+    },
+    {
+      "name": "LendingPoolState",
+      "discriminator": [
+        136,
+        103,
+        75,
+        166,
+        104,
+        12,
+        210,
+        203
+      ]
+    },
+    {
+      "name": "ReputationData",
+      "discriminator": [
+        223,
+        191,
+        121,
+        62,
+        74,
+        60,
+        117,
+        22
+      ]
+    },
+    {
+      "name": "ReputationManagerState",
+      "discriminator": [
+        126,
+        16,
+        50,
+        48,
+        170,
+        86,
+        33,
+        25
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "AdminTransferCancelledEvent",
+      "discriminator": [
+        175,
+        140,
+        104,
+        221,
+        194,
+        183,
+        79,
+        71
+      ]
+    },
+    {
+      "name": "AdminTransferCompletedEvent",
+      "discriminator": [
+        45,
+        61,
+        146,
+        62,
+        46,
+        238,
+        84,
+        243
+      ]
+    },
+    {
+      "name": "AdminTransferInitiatedEvent",
+      "discriminator": [
+        227,
+        26,
+        43,
+        16,
+        228,
+        108,
+        170,
+        243
+      ]
+    },
+    {
+      "name": "BadDebtWrittenOffEvent",
+      "discriminator": [
+        205,
+        47,
+        14,
+        95,
+        57,
+        88,
+        96,
+        121
+      ]
+    },
+    {
+      "name": "BorrowEvent",
+      "discriminator": [
+        86,
+        8,
+        140,
+        206,
+        215,
+        179,
+        118,
+        201
+      ]
+    },
+    {
+      "name": "BorrowedEvent",
+      "discriminator": [
+        46,
+        5,
+        1,
+        138,
+        156,
+        135,
+        208,
+        158
+      ]
+    },
+    {
+      "name": "CollateralAddedEvent",
+      "discriminator": [
+        90,
+        251,
+        19,
+        246,
+        134,
+        164,
+        243,
+        177
+      ]
+    },
+    {
+      "name": "CollateralDepositedEvent",
+      "discriminator": [
+        76,
+        214,
+        14,
+        34,
+        152,
+        143,
+        196,
+        5
+      ]
+    },
+    {
+      "name": "CollateralSeizedEvent",
+      "discriminator": [
+        9,
+        23,
+        218,
+        187,
+        142,
+        114,
+        53,
+        26
+      ]
+    },
+    {
+      "name": "CollateralWithdrawnEvent",
+      "discriminator": [
+        213,
+        133,
+        147,
+        44,
+        32,
+        59,
+        29,
+        112
+      ]
+    },
+    {
+      "name": "CreditOpenedEvent",
+      "discriminator": [
+        67,
+        180,
+        242,
+        226,
+        126,
+        184,
+        25,
+        231
+      ]
+    },
+    {
+      "name": "DefaultRecordedEvent",
+      "discriminator": [
+        129,
+        211,
+        247,
+        176,
+        159,
+        191,
+        148,
+        247
+      ]
+    },
+    {
+      "name": "DepositEvent",
+      "discriminator": [
+        120,
+        248,
+        61,
+        83,
+        31,
+        142,
+        107,
+        144
+      ]
+    },
+    {
+      "name": "DirectPaymentEvent",
+      "discriminator": [
+        63,
+        202,
+        70,
+        36,
+        225,
+        146,
+        182,
+        33
+      ]
+    },
+    {
+      "name": "LendingCollateralWithdrawnEvent",
+      "discriminator": [
+        98,
+        223,
+        26,
+        183,
+        139,
+        38,
+        133,
+        167
+      ]
+    },
+    {
+      "name": "LiquidatedEvent",
+      "discriminator": [
+        174,
+        69,
+        181,
+        104,
+        167,
+        3,
+        107,
+        164
+      ]
+    },
+    {
+      "name": "ParametersUpdatedEvent",
+      "discriminator": [
+        18,
+        212,
+        88,
+        71,
+        35,
+        165,
+        8,
+        22
+      ]
+    },
+    {
+      "name": "PausedEvent",
+      "discriminator": [
+        43,
+        14,
+        250,
+        236,
+        116,
+        42,
+        177,
+        89
+      ]
+    },
+    {
+      "name": "RepaidEvent",
+      "discriminator": [
+        145,
+        120,
+        77,
+        46,
+        93,
+        201,
+        30,
+        67
+      ]
+    },
+    {
+      "name": "RepayEvent",
+      "discriminator": [
+        129,
+        213,
+        0,
+        108,
+        218,
+        108,
+        82,
+        140
+      ]
+    },
+    {
+      "name": "ReputationParametersUpdatedEvent",
+      "discriminator": [
+        188,
+        22,
+        210,
+        17,
+        223,
+        152,
+        47,
+        249
+      ]
+    },
+    {
+      "name": "ScoreUpdatedEvent",
+      "discriminator": [
+        104,
+        92,
+        23,
+        182,
+        119,
+        129,
+        199,
+        48
+      ]
+    },
+    {
+      "name": "TierChangedEvent",
+      "discriminator": [
+        84,
+        222,
+        139,
+        243,
+        97,
+        249,
+        173,
+        111
+      ]
+    },
+    {
+      "name": "UnpausedEvent",
+      "discriminator": [
+        150,
+        198,
+        191,
+        67,
+        103,
+        86,
+        160,
+        55
+      ]
+    },
+    {
+      "name": "UserInitializedEvent",
+      "discriminator": [
+        19,
+        253,
+        52,
+        134,
+        6,
+        229,
+        85,
+        119
+      ]
+    },
+    {
+      "name": "WithdrawEvent",
+      "discriminator": [
+        22,
+        9,
+        133,
+        26,
+        160,
+        44,
+        71,
+        192
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "NotAuthorized",
+      "msg": "Not authorized"
+    },
+    {
+      "code": 6001,
+      "name": "InvalidAmount",
+      "msg": "Invalid amount"
+    },
+    {
+      "code": 6002,
+      "name": "CreditLineExists",
+      "msg": "Credit line already exists"
+    },
+    {
+      "code": 6003,
+      "name": "CreditLineNotActive",
+      "msg": "Credit line not active"
+    },
+    {
+      "code": 6004,
+      "name": "ExceedsCreditLimit",
+      "msg": "Exceeds credit limit"
+    },
+    {
+      "code": 6005,
+      "name": "InsufficientLiquidity",
+      "msg": "Insufficient liquidity"
+    },
+    {
+      "code": 6006,
+      "name": "ExceedsBorrowedAmount",
+      "msg": "Exceeds borrowed amount"
+    },
+    {
+      "code": 6007,
+      "name": "ExceedsInterest",
+      "msg": "Exceeds interest"
+    },
+    {
+      "code": 6008,
+      "name": "LiquidationNotAllowed",
+      "msg": "Liquidation not allowed"
+    },
+    {
+      "code": 6009,
+      "name": "AlreadyInitialized",
+      "msg": "Already initialized"
+    },
+    {
+      "code": 6010,
+      "name": "InvalidAddress",
+      "msg": "Invalid address"
+    },
+    {
+      "code": 6011,
+      "name": "PendingAdminNotSet",
+      "msg": "Pending admin not set"
+    },
+    {
+      "code": 6012,
+      "name": "NotPendingAdmin",
+      "msg": "Not pending admin"
+    },
+    {
+      "code": 6013,
+      "name": "BelowMinimumAmount",
+      "msg": "Below minimum amount"
+    },
+    {
+      "code": 6014,
+      "name": "NoActiveDebt",
+      "msg": "No active debt"
+    },
+    {
+      "code": 6015,
+      "name": "HasOutstandingDebt",
+      "msg": "Has outstanding debt"
+    },
+    {
+      "code": 6016,
+      "name": "InvalidParameters",
+      "msg": "Invalid parameters"
+    },
+    {
+      "code": 6017,
+      "name": "MathOverflow",
+      "msg": "Math overflow"
+    },
+    {
+      "code": 6018,
+      "name": "InsufficientBalance",
+      "msg": "Insufficient balance"
+    },
+    {
+      "code": 6019,
+      "name": "Paused",
+      "msg": "Protocol is paused"
+    },
+    {
+      "code": 6020,
+      "name": "CollateralNotFound",
+      "msg": "Collateral not found"
+    },
+    {
+      "code": 6021,
+      "name": "LenderNotFound",
+      "msg": "Lender not found"
+    }
+  ],
+  "types": [
+    {
+      "name": "AdminTransferCancelledEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "admin",
+            "type": "pubkey"
+          },
+          {
+            "name": "cancelled_pending_admin",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "AdminTransferCompletedEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "old_admin",
+            "type": "pubkey"
+          },
+          {
+            "name": "new_admin",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "AdminTransferInitiatedEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "current_admin",
+            "type": "pubkey"
+          },
+          {
+            "name": "pending_admin",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "BadDebtWrittenOffEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "borrower",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "BorrowEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "borrower",
+            "type": "pubkey"
+          },
+          {
+            "name": "recipient",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "BorrowedEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "borrower",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "total_borrowed",
+            "type": "u64"
+          },
+          {
+            "name": "due_date",
+            "type": "i64"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "CollateralAddedEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "borrower",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "total_collateral",
+            "type": "u64"
+          },
+          {
+            "name": "new_credit_limit",
+            "type": "u64"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "CollateralDepositedEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "borrower",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "total_collateral",
+            "type": "u64"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "CollateralInfo",
+      "docs": [
+        "Per-borrower collateral tracking (PDA seeded by borrower pubkey)"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "borrower",
+            "docs": [
+              "Borrower's public key"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "deposited_amount",
+            "docs": [
+              "Principal collateral deposited"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "earned_interest",
+            "docs": [
+              "Settled (realized) interest earnings on collateral"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "reward_debt",
+            "docs": [
+              "Reward debt for O(1) accumulator pattern"
+            ],
+            "type": "u128"
+          },
+          {
+            "name": "deposit_timestamp",
+            "docs": [
+              "Timestamp of collateral deposit"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "docs": [
+              "Bump seed for PDA"
+            ],
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "CollateralSeizedEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "borrower",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount_seized",
+            "type": "u64"
+          },
+          {
+            "name": "interest_seized",
+            "type": "u64"
+          },
+          {
+            "name": "remaining_collateral",
+            "type": "u64"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "CollateralWithdrawnEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "borrower",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "interest_earned",
+            "type": "u64"
+          },
+          {
+            "name": "remaining_collateral",
+            "type": "u64"
+          },
+          {
+            "name": "remaining_credit_limit",
+            "type": "u64"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "CreditLine",
+      "docs": [
+        "Per-borrower credit line (PDA seeded by borrower pubkey)"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "borrower",
+            "docs": [
+              "Borrower's public key"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "initial_collateral",
+            "docs": [
+              "Original collateral deposited (for reference tracking)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "borrowed_amount",
+            "docs": [
+              "Current outstanding borrowed amount"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "last_borrowed_timestamp",
+            "docs": [
+              "Timestamp of last borrow action"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "interest_accrued",
+            "docs": [
+              "Accrued interest on the borrowed amount"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "last_interest_update",
+            "docs": [
+              "Timestamp of last interest calculation"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "repayment_due_date",
+            "docs": [
+              "Deadline for full repayment (grace + repayment window)"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "is_active",
+            "docs": [
+              "Whether this credit line is active"
+            ],
+            "type": "bool"
+          },
+          {
+            "name": "total_repaid",
+            "docs": [
+              "Total amount repaid over lifetime"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "on_time_repayments",
+            "docs": [
+              "Number of on-time repayments"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "late_repayments",
+            "docs": [
+              "Number of late repayments"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "bump",
+            "docs": [
+              "Bump seed for PDA"
+            ],
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "CreditManagerState",
+      "docs": [
+        "Global protocol configuration (single PDA)"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "admin",
+            "docs": [
+              "Admin authority"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "pending_admin",
+            "docs": [
+              "Two-step admin transfer: pending new admin"
+            ],
+            "type": {
+              "option": "pubkey"
+            }
+          },
+          {
+            "name": "fixed_interest_rate",
+            "docs": [
+              "Fixed annual interest rate in basis points (e.g. 1500 = 15%)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "reputation_threshold",
+            "docs": [
+              "Reputation score threshold for credit increase eligibility"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "credit_increase_multiplier",
+            "docs": [
+              "Credit increase multiplier in basis points (e.g. 12000 = 120%)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "usdc_mint",
+            "docs": [
+              "USDC token mint"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "is_paused",
+            "docs": [
+              "Whether the protocol is paused"
+            ],
+            "type": "bool"
+          },
+          {
+            "name": "bump",
+            "docs": [
+              "Bump seed for PDA"
+            ],
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "CreditOpenedEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "borrower",
+            "type": "pubkey"
+          },
+          {
+            "name": "collateral_amount",
+            "type": "u64"
+          },
+          {
+            "name": "credit_limit",
+            "type": "u64"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "DefaultRecordedEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "user",
+            "type": "pubkey"
+          },
+          {
+            "name": "debt_amount",
+            "type": "u64"
+          },
+          {
+            "name": "penalty_applied",
+            "type": "u64"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "DepositEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "lender",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "DirectPaymentEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "borrower",
+            "type": "pubkey"
+          },
+          {
+            "name": "recipient",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "total_borrowed",
+            "type": "u64"
+          },
+          {
+            "name": "due_date",
+            "type": "i64"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "LenderInfo",
+      "docs": [
+        "Per-lender deposit tracking (PDA seeded by lender pubkey)"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "lender",
+            "docs": [
+              "Lender's public key"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "deposited_amount",
+            "docs": [
+              "Principal amount deposited"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "earned_interest",
+            "docs": [
+              "Settled (realized) interest earnings"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "reward_debt",
+            "docs": [
+              "Reward debt for O(1) accumulator pattern: deposited * acc_per_share at last settlement"
+            ],
+            "type": "u128"
+          },
+          {
+            "name": "initial_deposit_timestamp",
+            "docs": [
+              "Timestamp of first deposit (never overwritten)"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "last_deposit_timestamp",
+            "docs": [
+              "Timestamp of most recent deposit"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "docs": [
+              "Bump seed for PDA"
+            ],
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "LendingCollateralWithdrawnEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "borrower",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "interest_earned",
+            "type": "u64"
+          },
+          {
+            "name": "remaining_collateral",
+            "type": "u64"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "LendingPoolState",
+      "docs": [
+        "Global lending pool state (single PDA)"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "admin",
+            "docs": [
+              "Admin authority"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "total_deposited",
+            "docs": [
+              "Total deposited by lenders (principal only)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "total_collateral",
+            "docs": [
+              "Total collateral deposited by borrowers"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "total_borrowed",
+            "docs": [
+              "Total borrowed from the pool"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "total_repaid",
+            "docs": [
+              "Total repaid to the pool"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "protocol_fees_collected",
+            "docs": [
+              "Protocol fees collected (held in pool vault)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "accumulated_interest_per_share",
+            "docs": [
+              "Global O(1) interest accumulator (scaled by PRECISION = 1e12)"
+            ],
+            "type": "u128"
+          },
+          {
+            "name": "usdc_mint",
+            "docs": [
+              "USDC token mint"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "is_paused",
+            "docs": [
+              "Whether the pool is paused"
+            ],
+            "type": "bool"
+          },
+          {
+            "name": "bump",
+            "docs": [
+              "Bump seed for PDA"
+            ],
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "LiquidatedEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "borrower",
+            "type": "pubkey"
+          },
+          {
+            "name": "collateral_liquidated",
+            "type": "u64"
+          },
+          {
+            "name": "debt_cleared",
+            "type": "u64"
+          },
+          {
+            "name": "reason",
+            "type": "string"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ParametersUpdatedEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "fixed_interest_rate",
+            "type": "u64"
+          },
+          {
+            "name": "reputation_threshold",
+            "type": "u64"
+          },
+          {
+            "name": "credit_increase_multiplier",
+            "type": "u64"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PausedEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "admin",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "RepaidEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "borrower",
+            "type": "pubkey"
+          },
+          {
+            "name": "principal_amount",
+            "type": "u64"
+          },
+          {
+            "name": "interest_amount",
+            "type": "u64"
+          },
+          {
+            "name": "remaining_balance",
+            "type": "u64"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "RepayEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "borrower",
+            "type": "pubkey"
+          },
+          {
+            "name": "principal",
+            "type": "u64"
+          },
+          {
+            "name": "interest",
+            "type": "u64"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ReputationData",
+      "docs": [
+        "Per-user reputation data (PDA seeded by user pubkey)"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "user",
+            "docs": [
+              "User's public key"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "score",
+            "docs": [
+              "Current reputation score (0 - 1000)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "last_updated",
+            "docs": [
+              "Timestamp of last update"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "total_repayments",
+            "docs": [
+              "Total number of repayments"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "on_time_repayments",
+            "docs": [
+              "Number of on-time repayments"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "late_repayments",
+            "docs": [
+              "Number of late repayments"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "defaults",
+            "docs": [
+              "Number of defaults"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "tier",
+            "docs": [
+              "Current reputation tier (0=Bronze, 1=Silver, 2=Gold, 3=Platinum)"
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "is_initialized",
+            "docs": [
+              "Whether the user has been initialized in the reputation system"
+            ],
+            "type": "bool"
+          },
+          {
+            "name": "bump",
+            "docs": [
+              "Bump seed for PDA"
+            ],
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ReputationManagerState",
+      "docs": [
+        "Global reputation manager state (single PDA)"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "admin",
+            "docs": [
+              "Admin authority"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "on_time_bonus",
+            "docs": [
+              "Score bonus for on-time repayment"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "late_payment_penalty",
+            "docs": [
+              "Score penalty for late payment"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "default_penalty",
+            "docs": [
+              "Score penalty for default/liquidation"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "max_score_change",
+            "docs": [
+              "Maximum score change in a single update"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "is_paused",
+            "docs": [
+              "Whether the reputation system is paused"
+            ],
+            "type": "bool"
+          },
+          {
+            "name": "bump",
+            "docs": [
+              "Bump seed for PDA"
+            ],
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ReputationParametersUpdatedEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "on_time_bonus",
+            "type": "u64"
+          },
+          {
+            "name": "late_payment_penalty",
+            "type": "u64"
+          },
+          {
+            "name": "default_penalty",
+            "type": "u64"
+          },
+          {
+            "name": "max_score_change",
+            "type": "u64"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ScoreUpdatedEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "user",
+            "type": "pubkey"
+          },
+          {
+            "name": "old_score",
+            "type": "u64"
+          },
+          {
+            "name": "new_score",
+            "type": "u64"
+          },
+          {
+            "name": "is_increase",
+            "type": "bool"
+          },
+          {
+            "name": "reason",
+            "type": "string"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "TierChangedEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "user",
+            "type": "pubkey"
+          },
+          {
+            "name": "old_tier",
+            "type": "u8"
+          },
+          {
+            "name": "new_tier",
+            "type": "u8"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "UnpausedEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "admin",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "UserInitializedEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "user",
+            "type": "pubkey"
+          },
+          {
+            "name": "initial_score",
+            "type": "u64"
+          },
+          {
+            "name": "initial_tier",
+            "type": "u8"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "WithdrawEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "lender",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "interest",
+            "type": "u64"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    }
+  ]
+}
