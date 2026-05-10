@@ -1,3 +1,4 @@
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -51,6 +52,8 @@ const Navbar = () => {
             >
               Waitlist
             </motion.button>
+
+            <WalletMultiButton />
 
             {/* Social Media Icons */}
             <div className="flex gap-3 ml-4 pl-4 border-l border-white/10">
@@ -147,6 +150,10 @@ const Navbar = () => {
           >
             Waitlist
           </motion.button>
+
+          <div className="flex justify-center pt-4 border-t border-white/10 mb-4">
+            <WalletMultiButton />
+          </div>
 
           {/* Mobile Social Media Icons */}
           <div className="flex justify-center gap-4 pt-4 border-t border-white/10">

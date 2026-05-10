@@ -1,3 +1,4 @@
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronRight, DollarSign, Menu, PieChart, Wallet, X } from "lucide-react";
 
@@ -114,6 +115,10 @@ export const Sidebar = ({ activeTab, onTabChange, isOpen, onToggle }: SidebarPro
               })}
             </div>
           </nav>
+
+          <div className="p-6 border-t border-white/10">
+            <WalletMultiButton />
+          </div>
         </div>
       </div>
 
@@ -204,6 +209,10 @@ export const Sidebar = ({ activeTab, onTabChange, isOpen, onToggle }: SidebarPro
               })}
             </div>
           </nav>
+
+          <div className="p-6 border-t border-white/10">
+            <WalletMultiButton />
+          </div>
         </div>
       </motion.div>
     </>
@@ -225,7 +234,7 @@ export const AppBar = ({ onMenuToggle }: AppBarProps) => {
       className="bg-[#0a0a0a] border-b border-white/10 sticky top-0 z-30"
     >
       <div className="px-6 py-4">
-        <div className="flex items-center">
+        <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <button
               onClick={onMenuToggle}
@@ -243,6 +252,8 @@ export const AppBar = ({ onMenuToggle }: AppBarProps) => {
               </span>
             </div>
           </div>
+
+          <WalletMultiButton />
         </div>
       </div>
     </motion.div>
