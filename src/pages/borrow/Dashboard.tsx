@@ -17,6 +17,10 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { GlowingButton } from "../../components/GlowingButton";
 import { SEO } from "../../components/SEO";
+import { useCreditLine } from "../../solana/useCreditLine";
+import { useReputation } from "../../solana/useReputation";
+import { useUsdcBalance } from "../../solana/useUsdcBalance";
+import { useTransactions } from "../../solana/useTransactions";
 
 type CreditSummaryCardProps = {
   creditLimit: number;
@@ -374,39 +378,51 @@ const ReputationCard = ({ creditScore, potentialIncrease, tier }: ReputationCard
 export default function BorrowerDashboard() {
   const navigate = useNavigate();
 
-  const [creditData] = useState<{
-    creditLimit: number;
-    currentDebt: number;
-    borrowed: number;
-    interestAccrued: number;
-    availableCredit: number;
-    collateral: number;
-    isActive: boolean;
-    repaymentDueDate: number;
-    totalRepaid: number;
-  } | null>(null);
+  const { creditData, creditLineExists, refresh: refreshCreditLine } = useCreditLine();
+  const { reputationData, refresh: refreshReputation } = useReputation();
+  const { balance: usdcBalance, refresh: refreshBalance } = useUsdcBalance();
+  const { repay, withdrawCollateral } = useTransactions();
 
-  const [reputationData] = useState<{
-    score: number;
-    tier: number;
-    onTimeRepayments: number;
-    lateRepayments: number;
-  } | null>(null);
+  const [isRepaying, setIsRepaying] = useState(false);
+  const [isWithdrawing, setIsWithdrawing] = useState(false);
 
-  const [potentialIncrease] = useState(0);
-  const [creditLineExists] = useState(false);
-  const [usdcBalance] = useState(0);
+  const potentialIncrease = reputationData && reputationData.score >= 750 && creditData
+    ? creditData.creditLimit * 0.2
+    : 0;
 
   const handleStakeMore = () => {
     navigate("/borrow/stake");
   };
 
-  const handleRepay = async (_principalAmount: number, _interestAmount: number) => {
-    toast.info("Coming soon - repayments are not yet available");
+  const handleRepay = async (principalAmount: number, interestAmount: number) => {
+    setIsRepaying(true);
+    try {
+      await repay(principalAmount, interestAmount);
+      toast.success("Repayment successful!");
+      refreshCreditLine();
+      refreshReputation();
+      refreshBalance();
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Repayment failed";
+      toast.error(msg);
+    } finally {
+      setIsRepaying(false);
+    }
   };
 
-  const handleWithdrawCollateral = async (_amount: number) => {
-    toast.info("Coming soon - withdrawals are not yet available");
+  const handleWithdrawCollateral = async (amount: number) => {
+    setIsWithdrawing(true);
+    try {
+      await withdrawCollateral(amount);
+      toast.success("Collateral withdrawn successfully!");
+      refreshCreditLine();
+      refreshBalance();
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Withdrawal failed";
+      toast.error(msg);
+    } finally {
+      setIsWithdrawing(false);
+    }
   };
 
   const getTierName = (tier: number): string => {
@@ -490,7 +506,7 @@ export default function BorrowerDashboard() {
                 currentDebt={creditData.currentDebt}
                 onStakeMore={handleStakeMore}
                 onWithdraw={handleWithdrawCollateral}
-                isWithdrawing={false}
+                isWithdrawing={isWithdrawing}
               />
 
               <OutstandingLoanCard
@@ -500,7 +516,7 @@ export default function BorrowerDashboard() {
                 daysUntilDue={Math.abs(daysUntilDue)}
                 usdcBalance={usdcBalance}
                 onRepay={handleRepay}
-                isRepayLoading={false}
+                isRepayLoading={isRepaying}
               />
 
               <ReputationCard

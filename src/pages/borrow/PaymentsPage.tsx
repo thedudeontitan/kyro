@@ -27,17 +27,12 @@ import { QRCodeSVG } from "qrcode.react";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { PublicKey } from "@solana/web3.js";
+import { useWallet } from "@solana/wallet-adapter-react";
 import { GlowingButton } from "../../components/GlowingButton";
 import NFCPaymentSender, { type NFCPaymentData } from "../../components/NFCPaymentSender";
-
-type CreditLineInfo = {
-  creditLimit: number;
-  currentDebt: number;
-  availableCredit: number;
-  isActive: boolean;
-  repaymentDueDate: number;
-  collateral: number;
-};
+import { useCreditLine } from "../../solana/useCreditLine";
+import { useTransactions } from "../../solana/useTransactions";
 
 type TransactionStatusState = {
   status: "pending" | "success" | "error";
@@ -424,8 +419,8 @@ const PaymentSection = ({
           <NFCPaymentSender
             isProcessing={isProcessing}
             availableCredit={availableCredit}
-            onPayment={async (recipientAddress, amount) => {
-              await onPayment({ recipientAddress, paymentAmount: amount });
+            onPayment={async (recipientAddr, amount) => {
+              await onPayment({ recipientAddress: recipientAddr, paymentAmount: amount });
             }}
             onNFCPayment={(data) => {
               handleNFCPaymentScan(data);
@@ -587,7 +582,7 @@ const ReceiveSection = ({ walletAddress }: ReceiveSectionProps) => {
 
       <div className="bg-white p-6 mx-auto w-fit rounded-xl">
         <QRCodeSVG
-          value={walletAddress}
+          value={walletAddress || "no-wallet"}
           size={200}
           bgColor={"#ffffff"}
           fgColor={"#000000"}
@@ -609,7 +604,7 @@ const ReceiveSection = ({ walletAddress }: ReceiveSectionProps) => {
           <p className="text-sm text-gray-400 mb-2">Your Wallet Address</p>
           <div className="bg-white/5 border border-white/10 rounded-lg p-3 flex items-center justify-between">
             <span className="text-sm font-mono text-gray-400 truncate">
-              {walletAddress && walletAddress.slice(0, 16)}...{walletAddress.slice(-6)}
+              {walletAddress ? `${walletAddress.slice(0, 16)}...${walletAddress.slice(-6)}` : "Connect wallet"}
             </span>
             <motion.button
               whileHover={{ scale: 1.05 }}
@@ -832,34 +827,83 @@ const RecentTransactions = ({
 
 export default function PaymentsPage() {
   const navigate = useNavigate();
+  const { publicKey } = useWallet();
 
   const [activeTab, setActiveTab] = useState("payment");
-  const [transactionStatus] = useState<TransactionStatusState | null>(null);
+  const [transactionStatus, setTransactionStatus] = useState<TransactionStatusState | null>(null);
 
-  const [creditLineInfo] = useState<CreditLineInfo>({
-    creditLimit: 0,
-    currentDebt: 0,
-    availableCredit: 0,
-    isActive: false,
-    repaymentDueDate: 0,
-    collateral: 0,
-  });
+  const { creditData, creditLineExists, refresh: refreshCreditLine } = useCreditLine();
+  const { borrowAndPay } = useTransactions();
 
   // Transaction states
   const [recipientAddress, setRecipientAddress] = useState("");
   const [paymentAmount, setPaymentAmount] = useState("");
-  const [isProcessing] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
-  const [transactions] = useState<Transaction[]>([]);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loadingTransactions] = useState(false);
 
-  // Handle payment - stub with toast
-  const handlePayment = async (_data: PaymentData): Promise<void> => {
-    toast.info("Coming soon - payments are not yet available");
+  const walletAddress = publicKey?.toBase58() || "";
+
+  const handlePayment = async (data: PaymentData): Promise<void> => {
+    if (!publicKey) {
+      toast.error("Please connect your wallet first");
+      return;
+    }
+
+    if (!data.recipientAddress) {
+      toast.error("Please enter a recipient address");
+      return;
+    }
+
+    if (!data.paymentAmount || parseFloat(data.paymentAmount) <= 0) {
+      toast.error("Please enter a valid payment amount");
+      return;
+    }
+
+    const amount = parseFloat(data.paymentAmount);
+
+    let recipientPubkey: PublicKey;
+    try {
+      recipientPubkey = new PublicKey(data.recipientAddress);
+    } catch {
+      toast.error("Invalid recipient address");
+      return;
+    }
+
+    try {
+      setIsProcessing(true);
+      setTransactionStatus({ status: "pending", message: "Processing payment..." });
+
+      await borrowAndPay(recipientPubkey, amount);
+
+      setTransactionStatus({ status: "success", message: "Payment successful!" });
+      toast.success(`Payment of $${amount} sent successfully!`);
+
+      setTransactions((prev) => [
+        {
+          type: "payment",
+          amount,
+          date: new Date().toLocaleString(),
+          status: "completed",
+        },
+        ...prev,
+      ]);
+
+      setRecipientAddress("");
+      setPaymentAmount("");
+      refreshCreditLine();
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Payment failed";
+      setTransactionStatus({ status: "error", message: msg });
+      toast.error(msg);
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   // Check if user needs to open credit line
-  if (!creditLineInfo || !creditLineInfo.isActive) {
+  if (!creditLineExists || !creditData?.isActive) {
     return (
       <div className="min-h-screen bg-[black] text-white">
         <div className="relative z-10 max-w-2xl mx-auto px-4 py-24">
@@ -901,10 +945,10 @@ export default function PaymentsPage() {
         </div>
 
         <VirtualCreditCard
-          creditLimit={creditLineInfo?.creditLimit || 0}
-          availableCredit={creditLineInfo?.availableCredit || 0}
-          outstandingDebt={creditLineInfo?.currentDebt || 0}
-          userAddress=""
+          creditLimit={creditData.creditLimit}
+          availableCredit={creditData.availableCredit}
+          outstandingDebt={creditData.currentDebt}
+          userAddress={walletAddress}
           isProcessing={isProcessing}
         />
 
@@ -923,7 +967,7 @@ export default function PaymentsPage() {
                   className="flex-1"
                 >
                   <PaymentSection
-                    availableCredit={creditLineInfo?.availableCredit || 0}
+                    availableCredit={creditData.availableCredit}
                     onPayment={handlePayment}
                     recipientAddress={recipientAddress}
                     setRecipientAddress={setRecipientAddress}
@@ -941,7 +985,7 @@ export default function PaymentsPage() {
                   transition={{ duration: 0.3 }}
                   className="flex-1"
                 >
-                  <ReceiveSection walletAddress="" />
+                  <ReceiveSection walletAddress={walletAddress} />
                 </motion.div>
               )}
 

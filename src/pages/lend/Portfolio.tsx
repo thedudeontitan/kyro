@@ -14,6 +14,10 @@ import {
 import { useState } from "react";
 import { toast } from "sonner";
 import { GlowingButton } from "../../components/GlowingButton";
+import { useLenderInfo } from "../../solana/useLenderInfo";
+import { useLendingPool } from "../../solana/useLendingPool";
+import { useTransactions } from "../../solana/useTransactions";
+import { useUsdcBalance } from "../../solana/useUsdcBalance";
 
 type StatCardProps = {
   title: string;
@@ -308,21 +312,25 @@ const PoolStats = ({ poolStats }: { poolStats: any }) => {
 };
 
 export default function Portfolio() {
-  const [lenderData] = useState<LenderPosition | null>(null);
-  const [poolStats] = useState<any>({
-    totalDeposited: 0,
-    totalBorrowed: 0,
-    availableLiquidity: 0,
-    utilizationRate: 0,
-    protocolFees: 0,
-    currentAPY: 12.5,
-  });
+  const { lenderData, refresh: refreshLender } = useLenderInfo();
+  const { poolStats } = useLendingPool();
+  const { withdraw } = useTransactions();
+  const { refresh: refreshBalance } = useUsdcBalance();
   const [isWithdrawing, setIsWithdrawing] = useState(false);
 
-  const handleWithdraw = async (_amount: number) => {
+  const handleWithdraw = async (amount: number) => {
     setIsWithdrawing(true);
-    toast.info("Coming soon - withdrawals are not yet available");
-    setIsWithdrawing(false);
+    try {
+      await withdraw(amount);
+      toast.success("Withdrawal successful!");
+      refreshLender();
+      refreshBalance();
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Withdrawal failed";
+      toast.error(msg);
+    } finally {
+      setIsWithdrawing(false);
+    }
   };
 
   return (

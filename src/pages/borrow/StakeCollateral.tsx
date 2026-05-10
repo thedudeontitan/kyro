@@ -1,35 +1,56 @@
 import { motion } from "framer-motion";
 import { CheckCircle, DollarSign, Info, Loader, Plus } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { useWallet } from "@solana/wallet-adapter-react";
 import { GlowingButton } from "../../components/GlowingButton";
 import { validateUsdcAmount } from "../../lib/utils-finance";
-
-type CreditLineInfo = {
-  creditLimit: number;
-  currentDebt: number;
-  availableCredit: number;
-  isActive: boolean;
-  repaymentDueDate: number;
-  collateralAmount?: number;
-  collateral?: number;
-};
+import { useUsdcBalance } from "../../solana/useUsdcBalance";
+import { useCreditLine } from "../../solana/useCreditLine";
+import { useTransactions } from "../../solana/useTransactions";
 
 export default function StakeCollateral() {
   const [stakeAmount, setStakeAmount] = useState("");
-  const [transactionStatus] = useState<"idle" | "approving" | "staking" | "success" | "error">("idle");
-  const [usdcBalance] = useState(0);
-  const [creditLineInfo] = useState<CreditLineInfo | null>(null);
-  const [creditLineExists] = useState(false);
+  const [transactionStatus, setTransactionStatus] = useState<"idle" | "approving" | "staking" | "success" | "error">("idle");
 
-  const handleStake = () => {
+  const { publicKey } = useWallet();
+  const { balance: usdcBalance } = useUsdcBalance();
+  const { creditData: creditLineInfo, creditLineExists, refresh: refreshCreditLine } = useCreditLine();
+  const { openCreditLine, addCollateral } = useTransactions();
+  const navigate = useNavigate();
+
+  const handleStake = async () => {
+    if (!publicKey) {
+      toast.error("Please connect your wallet first");
+      return;
+    }
+
     if (!stakeAmount || parseFloat(stakeAmount) <= 0) return;
     const amount = parseFloat(stakeAmount);
     if (!validateUsdcAmount(amount)) {
       toast.error("Invalid amount. Minimum is 1 USDC.");
       return;
     }
-    toast.info("Coming soon - staking is not yet available");
+
+    try {
+      setTransactionStatus("staking");
+      if (creditLineExists) {
+        await addCollateral(amount);
+        toast.success("Collateral added successfully!");
+      } else {
+        await openCreditLine(amount);
+        toast.success("Credit line opened successfully!");
+      }
+      setTransactionStatus("success");
+      setStakeAmount("");
+      refreshCreditLine();
+      setTimeout(() => navigate("/borrow"), 1500);
+    } catch (err: unknown) {
+      setTransactionStatus("error");
+      const msg = err instanceof Error ? err.message : "Transaction failed";
+      toast.error(msg);
+    }
   };
 
   const calculateCreditLimit = () => {

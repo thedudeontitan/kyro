@@ -2,9 +2,13 @@ import { motion } from "framer-motion";
 import { AlertCircle, CheckCircle, DollarSign, Info, Loader } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useWallet } from "@solana/wallet-adapter-react";
 import { GlowingButton } from "../../components/GlowingButton";
 import { SEO } from "../../components/SEO";
 import { validateUsdcAmount } from "../../lib/utils-finance";
+import { useUsdcBalance } from "../../solana/useUsdcBalance";
+import { useLendingPool } from "../../solana/useLendingPool";
+import { useTransactions } from "../../solana/useTransactions";
 
 type LockupPeriod = {
   months: number;
@@ -63,17 +67,20 @@ export default function Deposit() {
     multiplier: 1.25,
     label: "3 months",
   });
-  const [transactionStatus] = useState<"idle" | "depositing" | "success" | "error">("idle");
-  const [errorMessage] = useState("");
-  const [usdcBalance] = useState(0);
-  const [lendingPoolStats] = useState({
-    totalDeposited: 0,
-    availableLiquidity: 0,
-    utilizationRate: 0,
-    currentAPY: 12.5,
-  });
+  const [transactionStatus, setTransactionStatus] = useState<"idle" | "depositing" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const { publicKey } = useWallet();
+  const { balance: usdcBalance, refresh: refreshBalance } = useUsdcBalance();
+  const { poolStats: lendingPoolStats } = useLendingPool();
+  const { deposit } = useTransactions();
 
   const handleDeposit = async () => {
+    if (!publicKey) {
+      toast.error("Please connect your wallet first");
+      return;
+    }
+
     if (!depositAmount || parseFloat(depositAmount) <= 0) {
       toast.error("Please enter a valid deposit amount");
       return;
@@ -86,7 +93,20 @@ export default function Deposit() {
       return;
     }
 
-    toast.info("Coming soon - deposits are not yet available");
+    try {
+      setTransactionStatus("depositing");
+      setErrorMessage("");
+      await deposit(amount);
+      setTransactionStatus("success");
+      toast.success("Deposit successful!");
+      setDepositAmount("");
+      refreshBalance();
+    } catch (err: unknown) {
+      setTransactionStatus("error");
+      const msg = err instanceof Error ? err.message : "Deposit failed";
+      setErrorMessage(msg);
+      toast.error(msg);
+    }
   };
 
   const calculateEstimatedYield = () => {
