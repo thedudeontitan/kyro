@@ -126,7 +126,7 @@ export default function LandingPage() {
     {
       question: "How do I earn yield?",
       answer:
-        "Your staked USDC earns competitive APY while serving as collateral for your credit line. The yield generated helps offset your interest, effectively making your virtual credit card self-repaying over time.",
+        "Your staked USDC earns competitive APY while serving as collateral for your credit line. The yield you earn grows your collateral, increasing your available credit limit over time.",
     },
     {
       question: "Is my money safe?",
@@ -162,8 +162,8 @@ export default function LandingPage() {
               Backed by Real Assets.
             </h1>
             <p className="text-xl md:text-2xl text-gray-400 mb-12 max-w-3xl mx-auto leading-relaxed">
-              Get an instant virtual credit card powered by USDC collateral. Spend anywhere, earn yield on your
-              deposits, and never sell your crypto.
+              Get an instant virtual credit card powered by USDC collateral. Tap to pay at any POS or NFC terminal
+              worldwide, earn yield on your deposits, and never sell your crypto.
             </p>
           </motion.div>
 
@@ -220,14 +220,14 @@ export default function LandingPage() {
             <StepCard
               step={3}
               title="Spend Anywhere"
-              description="Use your virtual credit card for payments online and in stores. Tap-to-pay, scan QR codes, or send directly to any wallet."
+              description="Use your virtual credit card at any POS or NFC terminal worldwide. Tap to pay in stores, shop online, or send to any wallet — accepted everywhere."
               icon={RefreshCw}
               delay={0.3}
             />
             <StepCard
               step={4}
               title="Earn While You Spend"
-              description="Your collateral earns competitive APY while backing your credit line. Your credit card pays for itself."
+              description="Your collateral earns competitive APY while backing your credit line. The yield grows your available credit over time."
               icon={PiggyBank}
               delay={0.4}
             />
@@ -345,13 +345,13 @@ export default function LandingPage() {
             />
             <FeatureCard
               icon={Target}
-              title="Self-Repaying Credit"
-              description="Collateral earns yield that offsets your interest. Your virtual card gets cheaper the longer you hold."
+              title="Yield-Earning Collateral"
+              description="Your collateral earns competitive APY, growing your credit limit over time. Your deposits work for you while you spend."
             />
             <FeatureCard
               icon={Shield}
               title="Pay Anywhere"
-              description="Send payments to any wallet, scan to pay at stores, or use tap-to-pay. Works everywhere crypto is accepted."
+              description="Tap to pay at any POS or NFC terminal in the world. Shop online, pay in stores, or send to any wallet — no borders, no limits."
             />
           </div>
         </div>
@@ -423,11 +423,11 @@ export default function LandingPage() {
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle className="w-4 h-4 text-green-500" />
-                    <span className="text-gray-300">Non-custodial & self-repaying</span>
+                    <span className="text-gray-300">Non-custodial & yield-earning</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle className="w-4 h-4 text-green-500" />
-                    <span className="text-gray-300">Pay anywhere</span>
+                    <span className="text-gray-300">Pay anywhere via POS & NFC</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle className="w-4 h-4 text-green-500" />

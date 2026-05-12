@@ -25,3 +25,8 @@ dist-ssr
 .env
 .context
 .claude
+
+# Solana
+test-ledger
+*.keypair
+*.so

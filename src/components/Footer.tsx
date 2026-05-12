@@ -13,9 +13,7 @@ export const Footer = () => {
           {/* Logo and Description */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-gradient-to-br from-[#7f67f5] to-[#6b54e0] rounded-xl flex items-center justify-center">
-                <span className="text-white font-bold text-lg">K</span>
-              </div>
+              <img src="/logo.png" alt="Kyro" className="w-10 h-10 rounded-xl" />
               <span className="text-2xl font-bold bg-gradient-to-r from-white via-violet-200 to-[#9580f7] bg-clip-text text-transparent">
                 Kyro
               </span>
