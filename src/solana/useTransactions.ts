@@ -1,15 +1,40 @@
 import { useCallback } from "react";
-import { PublicKey } from "@solana/web3.js";
+import { PublicKey, Transaction } from "@solana/web3.js";
 import { getAssociatedTokenAddress } from "@solana/spl-token";
-import { useWallet } from "@solana/wallet-adapter-react";
+import {
+  useWallet,
+  useConnection,
+} from "@solana/wallet-adapter-react";
 import { useProgram } from "./useProgram";
 import { useUsdcMint } from "./useUsdcMint";
 import { usdcToRaw } from "./utils";
 
 export function useTransactions() {
   const { program } = useProgram();
-  const { publicKey } = useWallet();
+  const { publicKey, signTransaction } = useWallet();
+  const { connection } = useConnection();
   const { usdcMint } = useUsdcMint();
+
+  const prepareAndSend = useCallback(
+    async (tx: Transaction) => {
+      if (!publicKey || !signTransaction)
+        throw new Error("Wallet not connected");
+
+      const { blockhash, lastValidBlockHeight } =
+        await connection.getLatestBlockhash("confirmed");
+      tx.recentBlockhash = blockhash;
+      tx.feePayer = publicKey;
+
+      const signed = await signTransaction(tx);
+      const signature = await connection.sendRawTransaction(signed.serialize());
+      await connection.confirmTransaction(
+        { signature, blockhash, lastValidBlockHeight },
+        "confirmed"
+      );
+      return signature;
+    },
+    [publicKey, signTransaction, connection]
+  );
 
   const deposit = useCallback(
     async (amount: number) => {
@@ -28,11 +53,11 @@ export function useTransactions() {
           usdcMint,
           lenderTokenAccount,
         })
-        .rpc();
+        .transaction();
 
-      return tx;
+      return prepareAndSend(tx);
     },
-    [program, publicKey, usdcMint]
+    [program, publicKey, usdcMint, prepareAndSend]
   );
 
   const withdraw = useCallback(
@@ -52,11 +77,11 @@ export function useTransactions() {
           usdcMint,
           lenderTokenAccount,
         })
-        .rpc();
+        .transaction();
 
-      return tx;
+      return prepareAndSend(tx);
     },
-    [program, publicKey, usdcMint]
+    [program, publicKey, usdcMint, prepareAndSend]
   );
 
   const openCreditLine = useCallback(
@@ -76,11 +101,11 @@ export function useTransactions() {
           usdcMint,
           borrowerTokenAccount,
         })
-        .rpc();
+        .transaction();
 
-      return tx;
+      return prepareAndSend(tx);
     },
-    [program, publicKey, usdcMint]
+    [program, publicKey, usdcMint, prepareAndSend]
   );
 
   const addCollateral = useCallback(
@@ -100,11 +125,11 @@ export function useTransactions() {
           usdcMint,
           borrowerTokenAccount,
         })
-        .rpc();
+        .transaction();
 
-      return tx;
+      return prepareAndSend(tx);
     },
-    [program, publicKey, usdcMint]
+    [program, publicKey, usdcMint, prepareAndSend]
   );
 
   const borrowAndPay = useCallback(
@@ -124,11 +149,11 @@ export function useTransactions() {
           usdcMint,
           recipientTokenAccount,
         })
-        .rpc();
+        .transaction();
 
-      return tx;
+      return prepareAndSend(tx);
     },
-    [program, publicKey, usdcMint]
+    [program, publicKey, usdcMint, prepareAndSend]
   );
 
   const repay = useCallback(
@@ -148,11 +173,11 @@ export function useTransactions() {
           usdcMint,
           borrowerTokenAccount,
         })
-        .rpc();
+        .transaction();
 
-      return tx;
+      return prepareAndSend(tx);
     },
-    [program, publicKey, usdcMint]
+    [program, publicKey, usdcMint, prepareAndSend]
   );
 
   const withdrawCollateral = useCallback(
@@ -172,11 +197,11 @@ export function useTransactions() {
           usdcMint,
           borrowerTokenAccount,
         })
-        .rpc();
+        .transaction();
 
-      return tx;
+      return prepareAndSend(tx);
     },
-    [program, publicKey, usdcMint]
+    [program, publicKey, usdcMint, prepareAndSend]
   );
 
   return {

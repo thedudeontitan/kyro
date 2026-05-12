@@ -24,11 +24,12 @@ import {
   Zap,
 } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 import { PublicKey } from "@solana/web3.js";
 import { useWallet } from "@solana/wallet-adapter-react";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { GlowingButton } from "../../components/GlowingButton";
 import NFCPaymentSender, { type NFCPaymentData } from "../../components/NFCPaymentSender";
 import { useCreditLine } from "../../solana/useCreditLine";
@@ -836,10 +837,23 @@ export default function PaymentsPage() {
   const { creditData, creditLineExists, refresh: refreshCreditLine } = useCreditLine();
   const { borrowAndPay } = useTransactions();
 
+  // Pre-fill form from URL params (set by redirect from mobile Chrome)
+  const [searchParams, setSearchParams] = useSearchParams();
+
   // Transaction states
   const [recipientAddress, setRecipientAddress] = useState("");
   const [paymentAmount, setPaymentAmount] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
+
+  useEffect(() => {
+    const r = searchParams.get("recipient");
+    const a = searchParams.get("amount");
+    if (r) setRecipientAddress(r);
+    if (a) setPaymentAmount(a);
+    if (r || a) {
+      setSearchParams({}, { replace: true });
+    }
+  }, [searchParams, setSearchParams]);
 
   const {
     transactions,
@@ -875,6 +889,22 @@ export default function PaymentsPage() {
       return;
     }
 
+    // On mobile browsers without Phantom's injected provider, redirect to
+    // Phantom's in-app browser with the payment data as URL params so the
+    // user can sign natively. NFC / QR scanning stays in Chrome.
+    const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const hasProvider = (window as any)?.phantom?.solana?.isPhantom;
+    if (isMobile && !hasProvider) {
+      const params = new URLSearchParams({
+        recipient: data.recipientAddress,
+        amount: data.paymentAmount,
+      });
+      const target = `${window.location.origin}${window.location.pathname}?${params}`;
+      window.location.href = `https://phantom.app/ul/browse/${encodeURIComponent(target)}`;
+      return;
+    }
+
     try {
       setIsProcessing(true);
       setTransactionStatus({ status: "pending", message: "Processing payment..." });
@@ -896,6 +926,31 @@ export default function PaymentsPage() {
       setIsProcessing(false);
     }
   };
+
+  // Check if wallet is connected first
+  if (!publicKey) {
+    return (
+      <div className="min-h-screen bg-[black] text-white">
+        <div className="relative z-10 max-w-2xl mx-auto px-4 py-24">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="bg-[#111] border border-white/10 rounded-2xl p-8 text-center"
+          >
+            <Wallet className="w-16 h-16 text-[#9580f7] mx-auto mb-4" />
+            <h2 className="text-2xl font-bold text-white mb-4">Connect Your Wallet</h2>
+            <p className="text-gray-400 mb-6">
+              Connect your wallet to access credit payments.
+            </p>
+            <div className="flex justify-center">
+              <WalletMultiButton />
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+  }
 
   // Check if user needs to open credit line
   if (!creditLineExists || !creditData?.isActive) {
