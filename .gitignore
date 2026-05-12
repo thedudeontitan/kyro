@@ -30,3 +30,7 @@ dist-ssr
 test-ledger
 *.keypair
 *.so
+
+.agents
+
+skills-lock.json

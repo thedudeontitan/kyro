@@ -82,13 +82,15 @@ const Navbar = () => {
             </div>
           </div>
 
-          {/* Mobile Menu Button */}
-          <motion.button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            whileTap={{ scale: 0.95 }}
-            className="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1"
-            aria-label="Toggle mobile menu"
-          >
+          {/* Mobile: Wallet + Menu Button */}
+          <div className="md:hidden flex items-center gap-2">
+            <WalletMultiButton />
+            <motion.button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              whileTap={{ scale: 0.95 }}
+              className="flex flex-col justify-center items-center w-8 h-8 space-y-1"
+              aria-label="Toggle mobile menu"
+            >
             <motion.span
               animate={{ rotate: isMenuOpen ? 45 : 0, y: isMenuOpen ? 6 : 0 }}
               className="w-6 h-0.5 bg-gray-300 block transition-all"
@@ -101,7 +103,8 @@ const Navbar = () => {
               animate={{ rotate: isMenuOpen ? -45 : 0, y: isMenuOpen ? -6 : 0 }}
               className="w-6 h-0.5 bg-gray-300 block transition-all"
             />
-          </motion.button>
+            </motion.button>
+          </div>
         </div>
       </div>
 
@@ -148,10 +151,6 @@ const Navbar = () => {
           >
             Waitlist
           </motion.button>
-
-          <div className="flex justify-center pt-4 border-t border-white/10 mb-4">
-            <WalletMultiButton />
-          </div>
 
           {/* Mobile Social Media Icons */}
           <div className="flex justify-center gap-4 pt-4 border-t border-white/10">
