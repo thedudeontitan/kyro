@@ -33,6 +33,7 @@ import { GlowingButton } from "../../components/GlowingButton";
 import NFCPaymentSender, { type NFCPaymentData } from "../../components/NFCPaymentSender";
 import { useCreditLine } from "../../solana/useCreditLine";
 import { useTransactions } from "../../solana/useTransactions";
+import { useTransactionHistory } from "../../solana/useTransactionHistory";
 
 type TransactionStatusState = {
   status: "pending" | "success" | "error";
@@ -840,8 +841,11 @@ export default function PaymentsPage() {
   const [paymentAmount, setPaymentAmount] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [loadingTransactions] = useState(false);
+  const {
+    transactions,
+    loading: loadingTransactions,
+    refresh: refreshTransactions,
+  } = useTransactionHistory();
 
   const walletAddress = publicKey?.toBase58() || "";
 
@@ -880,19 +884,10 @@ export default function PaymentsPage() {
       setTransactionStatus({ status: "success", message: "Payment successful!" });
       toast.success(`Payment of $${amount} sent successfully!`);
 
-      setTransactions((prev) => [
-        {
-          type: "payment",
-          amount,
-          date: new Date().toLocaleString(),
-          status: "completed",
-        },
-        ...prev,
-      ]);
-
       setRecipientAddress("");
       setPaymentAmount("");
       refreshCreditLine();
+      refreshTransactions();
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Payment failed";
       setTransactionStatus({ status: "error", message: msg });
@@ -1000,7 +995,7 @@ export default function PaymentsPage() {
           </div>
 
           <div className="lg:h-full">
-            <RecentTransactions transactions={transactions} loading={loadingTransactions} />
+            <RecentTransactions transactions={transactions} loading={loadingTransactions} onRefresh={refreshTransactions} />
           </div>
         </div>
 
