@@ -5,6 +5,9 @@ skip-lint = false
 [programs.localnet]
 kyro = "ESVeXwXtP9jDv1JoGnfQcQwC3tnyEdXV5VsATqxyCCg3"
 
+[programs.devnet]
+kyro = "ESVeXwXtP9jDv1JoGnfQcQwC3tnyEdXV5VsATqxyCCg3"
+
 [registry]
 url = "https://api.apr.dev"
 
