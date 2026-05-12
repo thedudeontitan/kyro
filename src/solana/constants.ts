@@ -1,7 +1,7 @@
 import { PublicKey } from "@solana/web3.js";
 
 export const KYRO_PROGRAM_ID = new PublicKey(
-  "ESVeXwXtP9jDv1JoGnfQcQwC3tnyEdXV5VsATqxyCCg3"
+  "2YTxz5iVKX6SspwxvhK67rpp3o9TKfWLspW1U69AprtS"
 );
 
 // PDA seed strings
@@ -21,5 +21,9 @@ export const USDC_DECIMALS = 6;
 export const USDC_MULTIPLIER = 1_000_000;
 
 // RPC
+// VITE_SOLANA_RPC_URL — main RPC (devnet for production, localnet for dev)
+// VITE_SOLANA_LOCALNET_RPC — optional localnet RPC for deployed builds pointing to a local validator
 export const SOLANA_RPC_URL =
   import.meta.env.VITE_SOLANA_RPC_URL || "http://localhost:8899";
+export const SOLANA_LOCALNET_RPC =
+  import.meta.env.VITE_SOLANA_LOCALNET_RPC || "";

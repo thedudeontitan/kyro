@@ -24,7 +24,7 @@ import * as os from "os";
 import * as path from "path";
 
 const PROGRAM_ID = new PublicKey(
-  "ESVeXwXtP9jDv1JoGnfQcQwC3tnyEdXV5VsATqxyCCg3"
+  "2YTxz5iVKX6SspwxvhK67rpp3o9TKfWLspW1U69AprtS"
 );
 const USDC_DECIMALS = 6;
 const DEFAULT_AMOUNT = 10_000; // 10,000 USDC

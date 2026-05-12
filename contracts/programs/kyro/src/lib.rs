@@ -8,7 +8,7 @@ pub mod state;
 
 use instructions::*;
 
-declare_id!("ESVeXwXtP9jDv1JoGnfQcQwC3tnyEdXV5VsATqxyCCg3");
+declare_id!("2YTxz5iVKX6SspwxvhK67rpp3o9TKfWLspW1U69AprtS");
 
 #[program]
 pub mod kyro {

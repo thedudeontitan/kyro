@@ -3,10 +3,10 @@ seeds = false
 skip-lint = false
 
 [programs.localnet]
-kyro = "ESVeXwXtP9jDv1JoGnfQcQwC3tnyEdXV5VsATqxyCCg3"
+kyro = "2YTxz5iVKX6SspwxvhK67rpp3o9TKfWLspW1U69AprtS"
 
 [programs.devnet]
-kyro = "ESVeXwXtP9jDv1JoGnfQcQwC3tnyEdXV5VsATqxyCCg3"
+kyro = "2YTxz5iVKX6SspwxvhK67rpp3o9TKfWLspW1U69AprtS"
 
 [registry]
 url = "https://api.apr.dev"

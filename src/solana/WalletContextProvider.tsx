@@ -26,7 +26,13 @@ export function WalletContextProvider({
   );
 
   return (
-    <ConnectionProvider endpoint={SOLANA_RPC_URL}>
+    <ConnectionProvider
+      endpoint={SOLANA_RPC_URL}
+      config={{
+        httpHeaders: { "ngrok-skip-browser-warning": "true" },
+        commitment: "confirmed",
+      }}
+    >
       <WalletProvider wallets={wallets} autoConnect>
         <WalletModalProvider>{children}</WalletModalProvider>
       </WalletProvider>

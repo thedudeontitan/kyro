@@ -5,7 +5,7 @@
  * IDL can be found at `target/idl/kyro.json`.
  */
 export type Kyro = {
-  "address": "ESVeXwXtP9jDv1JoGnfQcQwC3tnyEdXV5VsATqxyCCg3",
+  "address": "2YTxz5iVKX6SspwxvhK67rpp3o9TKfWLspW1U69AprtS",
   "metadata": {
     "name": "kyro",
     "version": "0.1.0",
