@@ -109,42 +109,42 @@ export default function LandingPage() {
 
   const faqs = [
     {
-      question: "How does the crypto credit card work?",
+      question: "How does the virtual credit card work?",
       answer:
-        "Kyro's crypto credit card lets you spend crypto without selling your assets. Stake USDC as collateral to get instant crypto-backed credit lines. Use tap-to-pay technology for real-world purchases while earning yield on your collateral.",
+        "Kyro gives you a virtual credit card backed by USDC collateral. Connect your Web3 wallet, deposit USDC, and instantly unlock a credit line you can spend anywhere. Your collateral stays in your control while powering your spending.",
     },
     {
-      question: "Can I spend crypto without selling it?",
+      question: "Do I need to sell my crypto to spend?",
       answer:
-        "Yes! Our crypto credit card allows you to spend your crypto purchasing power without triggering capital gains events. Your USDC collateral remains yours while backing your credit line for everyday spending.",
+        "No. Kyro lets you borrow against your USDC collateral instead of selling it. You keep full ownership of your assets while using your credit line for everyday purchases — no capital gains events triggered.",
     },
     {
-      question: "What makes this the best crypto credit card 2025?",
+      question: "What is USDC collateral?",
       answer:
-        "Unlike traditional crypto cards, Kyro offers yield-earning collateral, non-custodial control, no liquidation of assets, and real tap-to-pay functionality. You keep ownership while gaining spending power.",
+        "USDC is a stablecoin pegged 1:1 to the US dollar. When you deposit USDC as collateral on Kyro, it backs your virtual credit card's credit line. Your collateral remains on-chain, transparent, and fully in your control.",
     },
     {
-      question: "How do I earn yield on my crypto collateral?",
+      question: "How do I earn yield?",
       answer:
-        "Your staked USDC earns competitive APY while serving as collateral for your crypto credit line. This creates self-repaying crypto credit where your yield helps cover interest payments automatically.",
+        "Your staked USDC earns competitive APY while serving as collateral for your credit line. The yield generated helps offset your interest, effectively making your virtual credit card self-repaying over time.",
     },
     {
-      question: "Is this better than other crypto cards?",
+      question: "Is my money safe?",
       answer:
-        "Kyro offers true non-custodial crypto credit with yield-earning collateral, unlike centralized alternatives. You maintain self-custody while accessing crypto credit lines with competitive terms and real-world utility.",
+        "Yes. Kyro is fully non-custodial — your funds are secured by audited Solana smart contracts, not held by a centralized party. All transactions are transparent and verifiable on-chain, giving you complete control over your assets.",
     },
   ];
 
   return (
     <div className="min-h-screen bg-[black] text-white overflow-x-hidden">
       <SEO
-        title="Kyro - Best Crypto Credit Card 2025 | Spend Crypto Without Selling"
-        description="Get the best crypto credit card 2025. Spend crypto without selling with Kyro's USDC-backed credit lines. Earn yield on collateral while using crypto for everyday purchases with tap-to-pay."
-        keywords="best crypto credit card 2025, crypto credit card, spend crypto without selling, USDC credit card, crypto backed credit card, stablecoin credit card, crypto collateral credit, yield backed credit, crypto tap to pay, real world crypto payments, avoid capital gains crypto"
-        ogTitle="Kyro - Revolutionary Crypto Credit Card | Turn Crypto Into Spending Power"
-        ogDescription="Revolutionary crypto credit card that lets you spend crypto without selling. Stake USDC, get instant credit, earn yield on collateral. The future of crypto payments is here."
-        twitterTitle="Kyro - Crypto Credit Card | Spend USDC Without Selling"
-        twitterDescription="Get instant crypto credit using your USDC. No selling required. Earn yield while spending crypto in stores with tap-to-pay technology."
+        title="Kyro - Virtual Credit Card | Spend Without Selling Your Crypto"
+        description="Get an instant virtual credit card backed by USDC. Spend anywhere without selling your crypto. Earn yield on collateral. Powered by Solana."
+        keywords="virtual credit card, USDC credit card, crypto credit card, spend without selling, virtual card crypto, stablecoin credit, collateral backed credit, yield earning card, solana credit card, non-custodial credit"
+        ogTitle="Kyro - Virtual Credit Card | Spend Without Selling Your Crypto"
+        ogDescription="Get an instant virtual credit card backed by USDC. Spend anywhere without selling your crypto. Earn yield on collateral. Powered by Solana."
+        twitterTitle="Kyro - Virtual Credit Card | Spend Without Selling Your Crypto"
+        twitterDescription="Get an instant virtual credit card backed by USDC. Spend anywhere without selling your crypto. Earn yield on collateral. Powered by Solana."
       />
       <Navbar />
 
@@ -157,13 +157,13 @@ export default function LandingPage() {
             transition={{ duration: 0.8 }}
           >
             <h1 className="text-6xl md:text-8xl font-bold mb-6 bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent">
-              Crypto Credit Card.
+              Your Virtual Credit Card.
               <br />
-              Spend Without Selling.
+              Backed by Real Assets.
             </h1>
             <p className="text-xl md:text-2xl text-gray-400 mb-12 max-w-3xl mx-auto leading-relaxed">
-              Get instant crypto-backed credit using your USDC. Earn yield on collateral while spending crypto in real
-              life with tap-to-pay technology. No selling required.
+              Get an instant virtual credit card powered by USDC collateral. Spend anywhere, earn yield on your
+              deposits, and never sell your crypto.
             </p>
           </motion.div>
 
@@ -174,11 +174,11 @@ export default function LandingPage() {
             className="flex flex-col sm:flex-row gap-6 justify-center"
           >
             <GlowingButton variant="primary" onClick={() => navigate("/borrow")}>
-              Start Borrowing
+              Get Your Card
               <ArrowRight className="w-5 h-5" />
             </GlowingButton>
             <GlowingButton variant="secondary" onClick={() => navigate("/lend/deposit")}>
-              Start Lending
+              Earn as a Lender
               <TrendingUp className="w-5 h-5" />
             </GlowingButton>
           </motion.div>
@@ -205,29 +205,29 @@ export default function LandingPage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             <StepCard
               step={1}
-              title="Connect Crypto Wallet"
-              description="Connect your existing Web3 wallet to access crypto credit. Seamless integration with all major wallet providers for instant USDC credit lines."
+              title="Connect Your Wallet"
+              description="Link your Web3 wallet in seconds. Compatible with all major providers for instant access to your virtual credit card."
               icon={Wallet}
               delay={0.1}
             />
             <StepCard
               step={2}
-              title="Get Crypto-Backed Credit"
-              description="Receive instant crypto credit backed by your USDC collateral. No traditional credit checks - just stake crypto for credit."
+              title="Deposit Collateral"
+              description="Stake USDC as collateral to unlock your credit line. No credit checks, no paperwork — just deposit and go."
               icon={CreditCard}
               delay={0.2}
             />
             <StepCard
               step={3}
-              title="Spend Crypto Everywhere"
-              description="Use your crypto credit for everyday purchases. Tap-to-pay in stores, online shopping, and real-world payments without selling your crypto."
+              title="Spend Anywhere"
+              description="Use your virtual credit card for payments online and in stores. Tap-to-pay, scan QR codes, or send directly to any wallet."
               icon={RefreshCw}
               delay={0.3}
             />
             <StepCard
               step={4}
-              title="Earn Yield on Collateral"
-              description="Your staked USDC earns competitive APY while serving as collateral. Self-repaying crypto credit that grows your wealth."
+              title="Earn While You Spend"
+              description="Your collateral earns competitive APY while backing your credit line. Your credit card pays for itself."
               icon={PiggyBank}
               delay={0.4}
             />
@@ -245,11 +245,11 @@ export default function LandingPage() {
               transition={{ duration: 0.8 }}
             >
               <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-white via-gray-300 to-white bg-clip-text text-transparent">
-                Stake USDC for Credit
+                Lend & Earn Yield
               </h2>
               <p className="text-xl text-gray-400 mb-8 leading-relaxed">
-                Stake your USDC as collateral to unlock crypto credit lines. Earn competitive APY while your assets back
-                real-world crypto spending power.
+                Supply USDC to the lending pool and earn competitive APY. Your deposits power virtual credit cards while
+                generating passive income.
               </p>
 
               <div className="space-y-6 mb-8">
@@ -328,30 +328,30 @@ export default function LandingPage() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-white via-gray-300 to-white bg-clip-text text-transparent">
-              Why Choose Us?
+              Why Choose Kyro?
             </h2>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             <FeatureCard
               icon={Zap}
-              title="Crypto Card Technology"
-              description="Advanced crypto credit card technology built for Web3. Support for all major wallets and real-world payments."
+              title="Instant Virtual Card"
+              description="Get a virtual credit card in minutes. No applications, no waiting — connect your wallet and start spending."
             />
             <FeatureCard
               icon={Wallet}
-              title="USDC Credit Line"
-              description="Get instant credit backed by your USDC. Stable, reliable crypto collateral for everyday spending."
+              title="USDC-Backed Credit"
+              description="Your credit line is backed 1:1 by USDC collateral. Stable, transparent, and fully on-chain."
             />
             <FeatureCard
               icon={Target}
-              title="Yield-Backed Credit"
-              description="Your collateral earns yield while providing credit. Turn staked crypto into spending power that pays for itself."
+              title="Self-Repaying Credit"
+              description="Collateral earns yield that offsets your interest. Your virtual card gets cheaper the longer you hold."
             />
             <FeatureCard
               icon={Shield}
-              title="Tap-to-Pay Crypto"
-              description="Use crypto for real-world purchases with NFC tap-to-pay technology. Fast, secure, and widely accepted."
+              title="Pay Anywhere"
+              description="Send payments to any wallet, scan to pay at stores, or use tap-to-pay. Works everywhere crypto is accepted."
             />
           </div>
         </div>
@@ -365,18 +365,17 @@ export default function LandingPage() {
               Security & Transparency
             </h2>
             <p className="text-xl text-gray-400 mb-12 max-w-2xl mx-auto">
-              Your crypto credit is fully self-custodial and transparent. Avoid capital gains while spending crypto for
-              everyday purchases.
+              Your funds are secured by Solana smart contracts. Non-custodial, transparent, and verifiable on-chain.
             </p>
 
             <div className="flex flex-wrap justify-center items-center gap-8 mb-12">
               <div className="flex items-center gap-3 bg-[#111] rounded-xl px-6 py-3 border border-white/10">
                 <Shield className="w-8 h-8 text-[#9580f7]" />
-                <span className="text-lg font-medium">Non-Custodial Crypto Card</span>
+                <span className="text-lg font-medium">Non-Custodial</span>
               </div>
               <div className="flex items-center gap-3 bg-[#111] rounded-xl px-6 py-3 border border-white/10">
                 <Wallet className="w-8 h-8 text-[#9580f7]" />
-                <span className="text-lg font-medium">Real-World Crypto Payments</span>
+                <span className="text-lg font-medium">On-Chain Transparent</span>
               </div>
             </div>
           </motion.div>
@@ -393,10 +392,10 @@ export default function LandingPage() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-white via-gray-300 to-white bg-clip-text text-transparent">
-              Why Choose Kyro Over Other Crypto Cards?
+              Why Kyro Over Other Cards?
             </h2>
             <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-              Compare Kyro's crypto credit card with traditional crypto debit cards and centralized lending platforms
+              See how Kyro's virtual credit card compares to traditional crypto debit cards and centralized platforms
             </p>
           </motion.div>
 
@@ -412,15 +411,15 @@ export default function LandingPage() {
                 <div className="w-16 h-16 bg-gradient-to-r from-[#7f67f5] to-[#6b54e0] rounded-2xl flex items-center justify-center mx-auto mb-4">
                   <span className="text-white font-bold text-xl">Kyro</span>
                 </div>
-                <h3 className="text-xl font-bold text-white mb-4">Best Crypto Credit Card 2025</h3>
+                <h3 className="text-xl font-bold text-white mb-4">Kyro Virtual Credit Card</h3>
                 <ul className="space-y-3 text-sm">
                   <li className="flex items-center gap-2">
                     <CheckCircle className="w-4 h-4 text-green-500" />
-                    <span className="text-gray-300">True crypto credit (no selling)</span>
+                    <span className="text-gray-300">True credit (no selling)</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle className="w-4 h-4 text-green-500" />
-                    <span className="text-gray-300">Yield-earning USDC collateral</span>
+                    <span className="text-gray-300">Yield-earning collateral</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle className="w-4 h-4 text-green-500" />
@@ -428,11 +427,11 @@ export default function LandingPage() {
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle className="w-4 h-4 text-green-500" />
-                    <span className="text-gray-300">Real-world tap-to-pay</span>
+                    <span className="text-gray-300">Pay anywhere</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle className="w-4 h-4 text-green-500" />
-                    <span className="text-gray-300">Avoid capital gains tax</span>
+                    <span className="text-gray-300">No capital gains events</span>
                   </li>
                 </ul>
               </div>
@@ -511,7 +510,7 @@ export default function LandingPage() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-white via-gray-300 to-white bg-clip-text text-transparent">
-              Crypto Credit Card FAQ
+              Virtual Credit Card FAQ
             </h2>
           </motion.div>
 
@@ -534,15 +533,14 @@ export default function LandingPage() {
         <div className="max-w-4xl mx-auto text-center">
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
             <h2 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent">
-              Ready for the best crypto credit card 2025?
+              Get your virtual credit card today
             </h2>
             <p className="text-xl text-gray-400 mb-12 max-w-2xl mx-auto">
-              Experience crypto credit without selling your assets. Start spending crypto in stores with our stablecoin
-              credit card.
+              Backed by USDC. Powered by Solana. No credit checks required.
             </p>
 
             <GlowingButton variant="primary" className="text-xl px-12 py-6" onClick={() => navigate("/borrow")}>
-              Start Now
+              Get Started
               <ChevronRight className="w-6 h-6" />
             </GlowingButton>
           </motion.div>

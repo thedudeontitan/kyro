@@ -21,7 +21,7 @@ export const Footer = () => {
               </span>
             </div>
             <p className="text-gray-400 max-w-md">
-              The best crypto credit card 2025. Spend crypto without selling with yield-earning USDC collateral.
+              Virtual credit cards backed by real assets. Spend without selling.
             </p>
           </div>
 
@@ -30,10 +30,10 @@ export const Footer = () => {
             <h3 className="text-lg font-semibold text-white mb-4">Quick Links</h3>
             <div className="flex flex-col gap-2">
               <a href="/borrow" className="text-gray-400 hover:text-[#9580f7] transition-colors duration-300">
-                Get Crypto Credit
+                Get Your Card
               </a>
               <a href="/lend/deposit" className="text-gray-400 hover:text-[#9580f7] transition-colors duration-300">
-                Stake USDC & Earn
+                Lend & Earn
               </a>
               <a href="/waitlist" className="text-gray-400 hover:text-[#9580f7] transition-colors duration-300">
                 Join Waitlist
@@ -81,7 +81,7 @@ export const Footer = () => {
           className="mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500"
         >
           <div>
-            &copy; 2025 Kyro. All rights reserved. The future of crypto credit cards.
+            &copy; 2025 Kyro. All rights reserved.
           </div>
           <div className="flex gap-6">
             <a href="/privacy" className="hover:text-[#9580f7] transition-colors duration-300">

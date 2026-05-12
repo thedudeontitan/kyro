@@ -12,9 +12,9 @@ type SEOProps = {
 };
 
 export const SEO = ({
-  title = "Kyro - Crypto Credit Card | Spend Crypto Without Selling | USDC Credit Line",
-  description = "Get instant crypto credit without selling your assets. Kyro offers crypto-backed credit cards, USDC credit lines, and yield-earning collateral. Spend crypto in real life with tap-to-pay.",
-  keywords = "crypto credit card, crypto backed credit card, USDC credit card, spend crypto without selling, crypto credit line, stablecoin credit card, crypto collateral credit, yield backed credit, crypto tap to pay",
+  title = "Kyro - Virtual Credit Card | Spend Without Selling Your Crypto",
+  description = "Get an instant virtual credit card backed by USDC. Spend anywhere without selling your crypto. Earn yield on collateral. Powered by Solana.",
+  keywords = "virtual credit card, USDC credit card, crypto credit card, spend without selling, virtual card crypto, stablecoin credit, collateral backed credit, yield earning card, solana credit card, non-custodial credit",
   ogTitle,
   ogDescription,
   twitterTitle,
@@ -57,14 +57,14 @@ export const SEO = ({
           "operatingSystem": "Web",
           "offers": {
             "@type": "Offer",
-            "category": "Crypto Credit Card"
+            "category": "Virtual Credit Card"
           },
           "featureList": [
-            "Crypto-backed credit cards",
-            "USDC credit lines",
+            "Instant virtual credit card",
+            "USDC-backed credit lines",
             "Yield-earning collateral",
-            "Tap-to-pay technology",
-            "Non-custodial crypto spending"
+            "Pay anywhere",
+            "Non-custodial & on-chain"
           ],
           "sameAs": [
             "https://x.com/kyro",
